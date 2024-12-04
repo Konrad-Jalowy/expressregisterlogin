@@ -1,8 +1,5 @@
 const express = require('express');
-const bcrypt = require('bcrypt');
-const catchAsync = require("./catchAsync.js");
 
-const User = require('./userModel.js');
 const UserController = require("./userController.js");
 const app = express();
 
