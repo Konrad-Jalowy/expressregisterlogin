@@ -47,4 +47,23 @@ exports.login = catchAsync(async (req, res, next) => {
         res.send('Not Allowed')
       }
   });
-  
+
+exports.register = catchAsync(async (req, res, next) => {
+    let exists = await User.findOne({login: req.body.login});
+    if(exists !== null){
+        return res.status(500).json({"Error": "User with such login already exists"})
+    }
+
+    const hashedPassword = await bcrypt.hash(req.body.password, 10);
+
+    let created = await User.create(
+        { 
+        firstName: req.body.firstName, 
+        lastName: req.body.lastName,
+        login: req.body.login,
+        password: hashedPassword
+     });
+    
+    return res.status(201).json({"Msg": "User registered", "User": created})
+
+});
