@@ -32,19 +32,7 @@ app.post('/users', catchAsync(async (req, res, next) => {
   }));
 
 app.post("/users/login", UserController.loginValidator);
-app.post('/users/login', catchAsync(async (req, res, next) => {
-  
-  let user = await User.findOne({login: req.body.login});
-    if(user === null){
-        return res.status(400).json({"Error": "Cannot find user"})
-    }
-
-  if(await bcrypt.compare(req.body.password, user.password)) {
-      res.send('Success')
-    } else {
-      res.send('Not Allowed')
-    }
-}));
+app.post('/users/login', UserController.login );
 
 app.use(UserController.errorHandler);
 

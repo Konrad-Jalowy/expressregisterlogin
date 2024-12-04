@@ -32,4 +32,19 @@ exports.loginValidator = (req, res, next) => {
         return res.status(400).json({"Error": errorList});
     }
     return next();
-}
+};
+
+exports.login = catchAsync(async (req, res, next) => {
+  
+    let user = await User.findOne({login: req.body.login});
+      if(user === null){
+          return res.status(400).json({"Error": "Cannot find user"})
+      }
+  
+    if(await bcrypt.compare(req.body.password, user.password)) {
+        res.send('Success')
+      } else {
+        res.send('Not Allowed')
+      }
+  });
+  
