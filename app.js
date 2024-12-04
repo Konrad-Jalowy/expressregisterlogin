@@ -3,14 +3,13 @@ const bcrypt = require('bcrypt');
 const catchAsync = require("./catchAsync.js");
 
 const User = require('./userModel.js');
+const UserController = require("./userController.js");
 const app = express();
 
 app.use(express.json());
 
-app.get('/users', catchAsync( async (req, res, next) => {
-    const users = await User.find({}, {firstName: 1, lastName: 1, login: 1});
-    return res.json({"users": users});
-}));
+app.get("/", UserController.main);
+app.get('/users', UserController.main);
 
 app.post('/users', catchAsync(async (req, res, next) => {
         let exists = await User.findOne({login: req.body.login});
