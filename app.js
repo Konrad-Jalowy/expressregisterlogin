@@ -67,8 +67,6 @@ app.post('/users/login', catchAsync(async (req, res, next) => {
     }
 }));
 
-app.use((err, req, res, next) => {
-    res.status(500).json({"Error": "Some kind of error occurred."});
-});
+app.use(UserController.errorHandler);
 
 module.exports = app;
