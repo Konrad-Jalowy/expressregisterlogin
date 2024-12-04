@@ -47,7 +47,40 @@ exports.login = catchAsync(async (req, res, next) => {
         res.send('Not Allowed')
       }
   });
+  exports.registerValidator = (req, res, next) => {
 
+    const errorList = [];
+
+    if(req.body.login === undefined){
+        errorList.push({"login": "You must send login!"});
+    };
+    if(req.body.login === ""){
+        errorList.push({"login": "Login cannot be empty!"});
+    };
+    if(req.body.password === undefined){
+        errorList.push({"password": "You must send password"});
+    };
+    if(req.body.password === ""){
+        errorList.push({"password": "Password cannot be empty!"});
+    };
+    if(req.body.firstName === undefined){
+        errorList.push({"firstName": "You must send firstName"});
+    }
+    if(req.body.firstName === ""){
+        errorList.push({"firstName": "firstName cannot be empty!"});
+    }
+    if(req.body.lastName === undefined){
+        errorList.push({"lastName": "You must send lastName"});
+    }
+    if(req.body.lastName === ""){
+        errorList.push({"lastName": "lastName cannot be empty!"});
+    }
+   
+    if(errorList.length > 0){
+        return res.status(400).json({"Error": errorList});
+    }
+    return next();
+};
 exports.register = catchAsync(async (req, res, next) => {
     let exists = await User.findOne({login: req.body.login});
     if(exists !== null){
