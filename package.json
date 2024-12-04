@@ -1,0 +1,25 @@
+{
+  "name": "expressregisterlogin",
+  "version": "1.0.0",
+  "description": "Very simple project to try out express and mongo.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Konrad-Jalowy/expressregisterlogin.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Konrad-Jalowy/expressregisterlogin/issues"
+  },
+  "homepage": "https://github.com/Konrad-Jalowy/expressregisterlogin#readme",
+  "dependencies": {
+    "bcrypt": "^5.1.1",
+    "express": "^4.21.1",
+    "mongoose": "^8.8.3"
+  }
+}
