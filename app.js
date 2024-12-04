@@ -31,28 +31,7 @@ app.post('/users', catchAsync(async (req, res, next) => {
    
   }));
 
-app.post("/users/login", (req, res, next) => {
-
-    const errorList = [];
-
-    if(req.body.login === undefined){
-        errorList.push({"login": "You must send login!"});
-    };
-    if(req.body.login === ""){
-        errorList.push({"login": "Login cannot be empty!"});
-    };
-    if(req.body.password === undefined){
-        errorList.push({"password": "You must send password"});
-    };
-    if(req.body.password === ""){
-        errorList.push({"password": "Password cannot be empty!"});
-    };
-   
-    if(errorList.length > 0){
-        return res.status(400).json({"Error": errorList});
-    }
-    return next();
-});
+app.post("/users/login", UserController.loginValidator);
 app.post('/users/login', catchAsync(async (req, res, next) => {
   
   let user = await User.findOne({login: req.body.login});

@@ -10,3 +10,26 @@ exports.main = catchAsync( async (req, res, next) => {
 exports.errorHandler = (err, req, res, next) => {
     res.status(500).json({"Error": "Some kind of error occurred."});
 };
+
+exports.loginValidator = (req, res, next) => {
+
+    const errorList = [];
+
+    if(req.body.login === undefined){
+        errorList.push({"login": "You must send login!"});
+    };
+    if(req.body.login === ""){
+        errorList.push({"login": "Login cannot be empty!"});
+    };
+    if(req.body.password === undefined){
+        errorList.push({"password": "You must send password"});
+    };
+    if(req.body.password === ""){
+        errorList.push({"password": "Password cannot be empty!"});
+    };
+   
+    if(errorList.length > 0){
+        return res.status(400).json({"Error": errorList});
+    }
+    return next();
+}
