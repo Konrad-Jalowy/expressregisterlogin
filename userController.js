@@ -18,6 +18,12 @@ exports.loginValidator =  [
     body('password', 'Password cannot be empty').not().isEmpty(),
     body('password', 'The minimum password length is longer').isLength({min: 3}),
     body('login', 'The minimum login length is 6 characters').isLength({min: 6}),
+    body('login').custom(async value => {
+        const user = await User.findOne({login: value});
+        if (user === null) {
+          throw new Error('User doesnt exist');
+        }
+      }),
   ];
 
 exports.registerValidator = [
@@ -50,10 +56,7 @@ exports.validateAndForward = (req, res, next) => {
 exports.login = catchAsync(async (req, res, next) => {
   
     let user = await User.findOne({login: req.body.login});
-      if(user === null){
-          return res.status(400).json({"Error": "Cannot find user"})
-      }
-  
+    
     if(await bcrypt.compare(req.body.password, user.password)) {
         res.send('Success')
       } else {
