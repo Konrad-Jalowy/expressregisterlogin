@@ -31,6 +31,12 @@ exports.registerValidator = [
     body('lastName', 'LastName must be string').isString(),
     body('firstName', 'FirstName must be 6 chars or longer').isLength({min: 6}),
     body('lastName', 'LastName must be 6 chars or longer').isLength({min: 6}),
+    body('login').custom(async value => {
+        const user = await User.findOne({login: value});
+        if (user) {
+          throw new Error('Login already in use');
+        }
+      }),
   ];
 
 exports.validateAndForward = (req, res, next) => {
@@ -56,10 +62,7 @@ exports.login = catchAsync(async (req, res, next) => {
   });
 
 exports.register = catchAsync(async (req, res, next) => {
-    let exists = await User.findOne({login: req.body.login});
-    if(exists !== null){
-        return res.status(500).json({"Error": "User with such login already exists"})
-    }
+    
 
     const hashedPassword = await bcrypt.hash(req.body.password, 10);
 
