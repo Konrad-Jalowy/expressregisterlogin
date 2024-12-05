@@ -1,6 +1,7 @@
 const bcrypt = require('bcrypt');
 const catchAsync = require("./catchAsync.js");
 const User = require('./userModel.js');
+const { body } = require('express-validator');
 
 exports.main = catchAsync( async (req, res, next) => {
     const users = await User.find({}, {firstName: 1, lastName: 1, login: 1});
@@ -33,7 +34,13 @@ exports.errorHandler = (err, req, res, next) => {
 //     }
 //     return next();
 // };
-
+exports.loginValidator =  [
+    body('login', 'Login cannot be empty').not().isEmpty(),
+    body('password', 'Password cannot be empty').not().isEmpty(),
+    body('password', 'The minimum password length is longer').isLength({min: 3}),
+    body('login', 'The minimum login length is 6 characters').isLength({min: 6}),
+  ];
+  
 exports.login = catchAsync(async (req, res, next) => {
   
     let user = await User.findOne({login: req.body.login});
